@@ -154,13 +154,9 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
 
     @Override
     public void visit(WhileLoop whileLoop) {
-        /*whileLoop.expression.accept(this);*/
-        Number result = values.get(whileLoop.expression);
-
-        while (result.intValue() >= 0) {
+        while (values.get(whileLoop.expression).intValue() >= 0) {
             whileLoop.expression.accept(this);
-            /*whileLoop.statement.accept(this);*/
-            result = values.get(whileLoop.expression);
+            whileLoop.statement.accept(this);
         }
         /* TODO Assignment 6b: Here some code which actually executes the
                 while loop must be added. This code should get the current value

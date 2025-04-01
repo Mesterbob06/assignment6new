@@ -62,10 +62,6 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
             printStatement.expression.accept(this);
         }
         result.append(")");
-
-        //birks:
-        // result = String.format("println(\"%s\", %s);", printStatement.string, printStatement.expression);
-        //        statementRepresentations.put(printStatement, result);
     }
 
     @Override

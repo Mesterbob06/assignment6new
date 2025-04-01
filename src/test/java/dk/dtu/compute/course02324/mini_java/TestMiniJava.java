@@ -213,7 +213,7 @@ public class TestMiniJava{
         int sum = 0;
         while ( i >= 0 ) {
             j = i;
-            while ( j >= 0 ) {
+            while ( j >= 1 ) {
                 sum = sum + j;
                 j = j - 1;
                 // println(" i: ", i);

@@ -156,14 +156,19 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
          */
 
         // Birks
-        //System.out.println(printStatement.prefix + values.get(printStatement.expression )+ "lol");
+        System.out.println(printStatement.prefix + values.get(printStatement.expression ));
 
     }
 
     @Override
     public void visit(WhileLoop whileLoop) {
-        whileLoop.expression.accept(this);
+        /*whileLoop.expression.accept(this);*/
+        Number result = values.get(whileLoop.expression);
 
+        while (result.intValue() >= 0) {
+            whileLoop.expression.accept(this);
+            result = values.get(whileLoop.expression);
+        }
         /* TODO Assignment 6b: Here some code which actually executes the
                 while loop must be added. This code should get the current value
                 of the expression, and if that expression is greater or equal

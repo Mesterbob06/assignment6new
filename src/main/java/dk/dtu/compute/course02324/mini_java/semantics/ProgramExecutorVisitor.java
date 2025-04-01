@@ -159,6 +159,7 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
 
         while (result.intValue() >= 0) {
             whileLoop.expression.accept(this);
+            /*whileLoop.statement.accept(this);*/
             result = values.get(whileLoop.expression);
         }
         /* TODO Assignment 6b: Here some code which actually executes the

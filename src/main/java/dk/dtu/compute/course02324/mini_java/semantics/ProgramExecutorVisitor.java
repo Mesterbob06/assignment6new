@@ -156,7 +156,7 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
          */
 
         // Birks
-        //System.out.println(printStatement.prefix + values.get(printStatement.expression )+ "lol");
+        System.out.println(printStatement.prefix + values.get(printStatement.expression ));
 
     }
 

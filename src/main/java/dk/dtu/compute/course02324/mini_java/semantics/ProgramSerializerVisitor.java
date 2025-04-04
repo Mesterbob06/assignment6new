@@ -2,23 +2,15 @@ package dk.dtu.compute.course02324.mini_java.semantics;
 
 import dk.dtu.compute.course02324.mini_java.model.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ProgramSerializerVisitor extends ProgramVisitor  {
 
-    private StringBuilder result = new StringBuilder();
+    private final StringBuilder result = new StringBuilder();
 
     private int indentLevel = 0;
 
-    final private String INDENT = "  ";
-
-    private String addIndentation() {
-        String indent = "";
-        for (int i=0; i < indentLevel; i++) {
-            result.append(INDENT);
-        }
-        return indent;
+    private void addIndentation() {
+        String INDENT = "  ";
+        result.append(INDENT.repeat(Math.max(0, indentLevel)));
     }
 
 
@@ -40,14 +32,14 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
             if (statement instanceof WhileLoop) {
                 result.append(System.lineSeparator());
             } else {
-                result.append(";" + System.lineSeparator());
+                result.append(";").append(System.lineSeparator());
             }
         }
     }
 
     @Override
     public void visit(Declaration declaration) {
-        result.append(declaration.type.getName() + " " + declaration.variable.name);
+        result.append(declaration.type.getName()).append(" ").append(declaration.variable.name);
         if (declaration.expression != null) {
             result.append(" = ");
             declaration.expression.accept(this);
@@ -56,11 +48,9 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
 
     @Override
     public void visit(PrintStatement printStatement) {
-        result.append("System.out.println(\"" + printStatement.prefix + "\"");
-        if (printStatement.expression != null) {
-            result.append(" + ");
-            printStatement.expression.accept(this);
-        }
+        result.append("System.out.println(\"").append(printStatement.prefix).append("\"");
+        result.append(" + ");
+        printStatement.expression.accept(this);
         result.append(")");
     }
 
@@ -68,7 +58,7 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
     public void visit(WhileLoop whileLoop) {
         result.append("while ( ");
         whileLoop.expression.accept(this);
-        result.append(" >= 0 ) {" + System.lineSeparator());
+        result.append(" >= 0 ) {").append(System.lineSeparator());
         indentLevel++;
         whileLoop.statement.accept(this);
         indentLevel--;
@@ -78,7 +68,7 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
 
     @Override
     public void visit(Assignment assignment) {
-        result.append(assignment.variable.name  + " = ");
+        result.append(assignment.variable.name).append(" = ");
         assignment.expression.accept(this);
     }
 
@@ -87,7 +77,7 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
         if (literal instanceof IntLiteral) {
             result.append(((IntLiteral) literal).literal);
         } else if (literal instanceof FloatLiteral) {
-            result.append(((FloatLiteral) literal).literal + "f");
+            result.append(((FloatLiteral) literal).literal).append("f");
         } else {
             assert false;
         }
@@ -100,17 +90,17 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
 
     @Override
     public void visit(OperatorExpression operatorExpression) {
-        if (operatorExpression.operands.size() == 0) {
-            result.append(operatorExpression.operator.getName() +"()");
+        if (operatorExpression.operands.isEmpty()) {
+            result.append(operatorExpression.operator.getName()).append("()");
         } else if (operatorExpression.operands.size() == 1) {
-            result.append(operatorExpression.operator.getName() + " ");
+            result.append(operatorExpression.operator.getName()).append(" ");
             operatorExpression.operands.getFirst().accept(this);
         } else if (operatorExpression.operands.size() == 2) {
             operandToString(operatorExpression.operator, operatorExpression.operands.getFirst(),0);
-            result.append(" " + operatorExpression.operator.getName() + " ");
+            result.append(" ").append(operatorExpression.operator.getName()).append(" ");
             operandToString(operatorExpression.operator, operatorExpression.operands.getLast(), 1);
         } else {
-            result.append(operatorExpression.operator.getName() + "(");
+            result.append(operatorExpression.operator.getName()).append("(");
             boolean first = true;
             for (Expression operand : operatorExpression.operands) {
                 if (!first) {
@@ -128,7 +118,7 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
     public void visit(IfThenElse ifThenElse) {
         result.append("if ( ");
         ifThenElse.conditionalExpression.accept(this);
-        result.append(" >= 0 ) {" + System.lineSeparator());
+        result.append(" >= 0 ) {").append(System.lineSeparator());
         indentLevel++;
         ifThenElse.trueStatement.accept(this);
         indentLevel--;

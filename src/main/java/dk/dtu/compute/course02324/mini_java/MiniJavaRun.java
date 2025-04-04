@@ -128,6 +128,43 @@ public class MiniJavaRun {
         );
 
         printTypeEvaluate(whileLoops);
+        System.out.println("Result by java:");
+        int p = 1000;
+        int o = 500;
+        if(p - o >= 0){
+            System.out.println("p - o");
+            p = p - o;
+            System.out.println(p);
+        } else {
+            System.out.println("p + o");
+            p = p + o;
+            System.out.println(p);
+        }
+
+        System.out.println("Test of if statement");
+        Statement ifStatements = Sequence(
+                Declaration(INT, Var("p"), Literal(1000)),
+                Declaration(INT, Var("o"), Literal(500)),
+                new IfThenElse(
+                                OperatorExpression(MINUS2,
+                                        Var("p"),
+                                        Var("o")
+                                ),
+                        Sequence(
+                                PrintStatement("p is greater or equal to o, ", Var("o")),
+                                Assignment(Var("p"),
+                                        OperatorExpression(MINUS2,
+                                        Var("p"),
+                                        Var("o")))),
+                        Sequence(PrintStatement("p less than o, ", Var("o")),
+                                Assignment(Var("p"),
+                                        OperatorExpression(PLUS2,
+                                                Var("p"),
+                                                Var("o"))))
+                )
+        );
+
+        printTypeEvaluate(ifStatements);
 
 
         System.out.println("Result provided by Java");

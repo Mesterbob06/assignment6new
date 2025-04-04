@@ -213,7 +213,7 @@ public class TestMiniJava{
         int sum = 0;
         while ( i >= 0 ) {
             j = i;
-            while ( j >= 0 ) {
+            while ( j >= 0) {
                 sum = sum + j;
                 j = j - 1;
                 // println(" i: ", i);
@@ -263,7 +263,7 @@ public class TestMiniJava{
 
         ptv.visit(statement);
         if (!ptv.problems.isEmpty()) {
-            fail("The type visitor did detect typing problems, which should not be there!");
+            fail("The type visitor did detect typing problems, which should not be there!"+ ptv.problems);
         }
         pev.visit(statement);
 

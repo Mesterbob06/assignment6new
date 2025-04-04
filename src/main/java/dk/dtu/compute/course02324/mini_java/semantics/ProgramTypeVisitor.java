@@ -14,7 +14,6 @@ public class ProgramTypeVisitor extends ProgramVisitor {
      * This is a very simple map of operators to their possible types.
      * Note the typing of an operator is very simplistic for now; the
      * types of all operands and the result of the operation are the same.<p>
-     *
      */
     final private Map<Operator,List<Type>> operatorTypes = Map.ofEntries(
             entry(PLUS1, List.of(INT,FLOAT)),
@@ -75,12 +74,9 @@ public class ProgramTypeVisitor extends ProgramVisitor {
 
     public void visit(WhileLoop whileLoop) {
         whileLoop.expression.accept(this);
-
-        /* TODO Assignment 6b: Here some code most be implemented for
-                checking that the expression is of type integer. If not,
-                the code must add a problem to the problem list.
-         */
-
+        if(!((typeMapping.get(whileLoop.expression).equals(INT)))){
+            problems.add("Expression is not of type int..." );
+        }
         whileLoop.statement.accept(this);
     }
 

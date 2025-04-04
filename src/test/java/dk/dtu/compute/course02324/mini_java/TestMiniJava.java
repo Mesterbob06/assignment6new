@@ -454,7 +454,7 @@ public class TestMiniJava {
     }
 
     @Test
-    public void testIfThenElse() {
+    public void testElse() {
         int i = -1;
         if (i >= 0) {
             i--;
@@ -465,6 +465,7 @@ public class TestMiniJava {
 
         Statement statement = Sequence(
                 Declaration(INT, Var("i"), Literal(-1)),
+                PrintStatement("i before: ", Var("i")),
                 new IfThenElse(
                         Var("i"),
                         Sequence(
@@ -474,7 +475,8 @@ public class TestMiniJava {
                                                 Var("i"),
                                                 Literal(1)
                                         )
-                                )
+                                ),
+                                PrintStatement("i after: ", Var("i"))
                         ),
                         Sequence(
                                 Assignment(
@@ -483,7 +485,8 @@ public class TestMiniJava {
                                                 Var("i"),
                                                 Literal(1)
                                         )
-                                )
+                                ),
+                                PrintStatement("i after: ", Var("i"))
 
                         )
                 )
@@ -506,6 +509,67 @@ public class TestMiniJava {
             }
         }
         assertEquals(0, variables.size(), "Some variables have not been evaluated");
+
     }
 
+    @Test
+    public void testIfThen() {
+        int i = 1;
+        if (i >= 0) {
+            i++;
+        } else {
+            i--;
+        }
+
+
+        Statement statement = Sequence(
+                Declaration(INT, Var("i"), Literal(1)),
+                PrintStatement("i before: ", Var("i")),
+                new IfThenElse(
+                        Var("i"),
+                        Sequence(
+                                Assignment(
+                                        Var("i"),
+                                        OperatorExpression(PLUS2,
+                                                Var("i"),
+                                                Literal(1)
+                                        )
+                                ),
+                                PrintStatement("i after: ", Var("i"))
+                        ),
+                        Sequence(
+                                Assignment(
+                                        Var("i"),
+                                        OperatorExpression(MINUS2,
+                                                Var("i"),
+                                                Literal(1)
+                                        )
+                                ),
+                                PrintStatement("i after: ", Var("i"))
+                        )
+                )
+        );
+
+        ptv.visit(statement);
+        if (!ptv.problems.isEmpty()) {
+            fail("The type visitor did detect typing problems, which should not be there!" + ptv.problems);
+        }
+        pev.visit(statement);
+
+        Set<String> variables = new HashSet<>(List.of("i"));
+        for (Var var : ptv.variables) {
+            variables.remove(var.name);
+
+            if (var.name.equals("i")) {
+                assertEquals(i, pev.values.get(var), "Value of variable i should be " + i + ".");
+            } else {
+                fail("A non-existing variable " + var.name + " occurred in evaluation of program.");
+            }
+        }
+        assertEquals(0, variables.size(), "Some variables have not been evaluated");
+
+    }
 }
+
+
+

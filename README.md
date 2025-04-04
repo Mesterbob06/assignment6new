@@ -7,7 +7,7 @@ checks that the expression is an integer, adding a problem if it is not.
 The serializer visitor serializes the while loop, using the addIndentation() method
 to handle indentation of the code inside the loop.
 The executor visitor recursively visits the expression and statement in a
-while loop while the expression is greater than or equal to 0.
+while loop, while the expression is greater than or equal to 0.
 
 # Extras
 We decided to do the optional assignment of adding the 

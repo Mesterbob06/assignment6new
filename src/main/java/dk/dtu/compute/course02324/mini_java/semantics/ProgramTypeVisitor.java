@@ -74,8 +74,7 @@ public class ProgramTypeVisitor extends ProgramVisitor {
 
     public void visit(WhileLoop whileLoop) {
         whileLoop.expression.accept(this);
-
-        if(!(whileLoop.expression instanceof IntLiteral)){
+        if(!((typeMapping.get(whileLoop.expression).equals(INT)))){
             problems.add("Expression is not of type int... " );
         }
 

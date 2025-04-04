@@ -1,4 +1,13 @@
 # Assignment 6a
+We added the operators missing from the abstract syntax. 
+This being the unary operators division, modulus, multiply and the binary minus.
+We did this by adding the relevant functions and entries in the ProgramExecutorVisitor.
+In the description of the assignment, it says MINUS2 and MUL should only be for integer
+arguments, but after testing and conferring with Carlos, we decided to add it for both
+types of argument. For the print statement, we added a new class, PrintStatement, 
+which implemented the accept method from the extended Statement class. We added the
+relevant visit methods in the visitor classes. For all of this we made sure the 
+existing tests passed and added some further tests.
 
 # Assignment 6b
 We added the while loop class and implemented the corresponding visitors.

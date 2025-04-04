@@ -20,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.fail;
  * These are some basic tests of the MiniJava for computing the types and
  * evaluating expressions.
  */
-public class TestMiniJava{
+public class TestMiniJava {
 
     private ProgramTypeVisitor ptv;
 
     private ProgramExecutorVisitor pev;
 
     /**
-     *  Sets up the visitors for type checking and execution.
+     * Sets up the visitors for type checking and execution.
      */
     @BeforeEach
     public void setUp() {
@@ -87,7 +87,7 @@ public class TestMiniJava{
         pev.visit(statement);
 
         Set<String> variables = new HashSet<>(List.of("i", "j"));
-        for (Var var: ptv.variables) {
+        for (Var var : ptv.variables) {
             variables.remove(var.name);
 
             if (var.name.equals("i")) {
@@ -156,7 +156,7 @@ public class TestMiniJava{
         pev.visit(statement);
 
         Set<String> variables = new HashSet<>(List.of("i", "j"));
-        for (Var var: ptv.variables) {
+        for (Var var : ptv.variables) {
             variables.remove(var.name);
 
             if (var.name.equals("i")) {
@@ -174,7 +174,7 @@ public class TestMiniJava{
     @Test
     public void testWronglyTypedProgram() {
         int i;
-        int j = i = 2 + (i = 3) ;
+        int j = i = 2 + (i = 3);
 
         Statement statement =
                 new Sequence(
@@ -211,16 +211,18 @@ public class TestMiniJava{
         int i = 5;
         int j = 0;
         int sum = 0;
-        while ( i >= 0 ) {
+        while (i >= 0) {
             j = i;
-            while ( j >= 0) {
+            while (j >= 0) {
                 sum = sum + j;
                 j = j - 1;
                 // println(" i: ", i);
                 // println(" j: ", j);
-            };
+            }
+            ;
             i = i - 1;
-        };
+        }
+        ;
 
         Statement statement = Sequence(
                 Declaration(INT, Var("i"), Literal(5)),
@@ -263,12 +265,12 @@ public class TestMiniJava{
 
         ptv.visit(statement);
         if (!ptv.problems.isEmpty()) {
-            fail("The type visitor did detect typing problems, which should not be there!"+ ptv.problems);
+            fail("The type visitor did detect typing problems, which should not be there!" + ptv.problems);
         }
         pev.visit(statement);
 
         Set<String> variables = new HashSet<>(List.of("i", "j", "sum"));
-        for (Var var: ptv.variables) {
+        for (Var var : ptv.variables) {
             variables.remove(var.name);
 
             if (var.name.equals("i")) {
@@ -286,8 +288,8 @@ public class TestMiniJava{
 
     @Test
     public void testPrintAndAdditionalOperators() {
-        int i = - + -1 + 7 - 1;
-        float x = - + -1.5f + 7.0f - 1.0f;
+        int i = -+-1 + 7 - 1;
+        float x = -+-1.5f + 7.0f - 1.0f;
         int j = 36 % 7;
         int k = 36 / 7;
         float y = 36.0f / 7.0f;
@@ -368,7 +370,7 @@ public class TestMiniJava{
         pev.visit(printStatements);
 
         Set<String> variables = new HashSet<>(List.of("i", "x", "j", "k", "y"));
-        for (Var var: ptv.variables) {
+        for (Var var : ptv.variables) {
             variables.remove(var.name);
 
             if (var.name.equals("i")) {
@@ -393,16 +395,18 @@ public class TestMiniJava{
         float i = 5f;
         float j = 0f;
         float sum = 0f;
-        while ( i >= 0f ) {
+        while (i >= 0f) {
             j = i;
-            while ( j >= 0f) {
+            while (j >= 0f) {
                 sum = sum + j;
                 j = j - 1f;
                 // println(" i: ", i);
                 // println(" j: ", j);
-            };
+            }
+            ;
             i = i - 1f;
-        };
+        }
+        ;
 
         Statement statement = Sequence(
                 Declaration(FLOAT, Var("i"), Literal(5)),
@@ -447,28 +451,61 @@ public class TestMiniJava{
         if (ptv.problems.isEmpty()) {
             fail("No type problems detected in a mistyped loop!");
         }
+    }
+
+    @Test
+    public void testIfThenElse() {
+        int i = -1;
+        if (i >= 0) {
+            i--;
+        } else {
+            i++;
+        }
 
 
-//        if (!ptv.problems.isEmpty()) {
-//            fail("The type visitor did detect typing problems, which should not be there!"+ ptv.problems);
-//        }
-//        pev.visit(statement);
-//
-//        Set<String> variables = new HashSet<>(List.of("i", "j", "sum"));
-//        for (Var var: ptv.variables) {
-//            variables.remove(var.name);
-//
-//            if (var.name.equals("i")) {
-//                assertEquals(i, pev.values.get(var), "Value of variable i should be " + i + ".");
-//            } else if (var.name.equals("j")) {
-//                assertEquals(j, pev.values.get(var), "Value of variable j should be " + j + ".");
-//            } else if (var.name.equals("sum")) {
-//                assertEquals(sum, pev.values.get(var), "Value of variable sum should be " + sum + ".");
-//            } else {
-//                fail("A non-existing variable " + var.name + " occurred in evaluation of program.");
-//            }
-//        }
-//        assertEquals(0, variables.size(), "Some variables have not been evaluated");
+        Statement statement = Sequence(
+                Declaration(INT, Var("i"), Literal(-1)),
+                new IfThenElse(
+                        Var("i"),
+                        Sequence(
+                                Assignment(
+                                        Var("i"),
+                                        OperatorExpression(MINUS2,
+                                                Var("i"),
+                                                Literal(1)
+                                        )
+                                )
+                        ),
+                        Sequence(
+                                Assignment(
+                                        Var("i"),
+                                        OperatorExpression(PLUS2,
+                                                Var("i"),
+                                                Literal(1)
+                                        )
+                                )
+
+                        )
+                )
+        );
+
+        ptv.visit(statement);
+        if (!ptv.problems.isEmpty()) {
+            fail("The type visitor did detect typing problems, which should not be there!" + ptv.problems);
+        }
+        pev.visit(statement);
+
+        Set<String> variables = new HashSet<>(List.of("i"));
+        for (Var var : ptv.variables) {
+            variables.remove(var.name);
+
+            if (var.name.equals("i")) {
+                assertEquals(i, pev.values.get(var), "Value of variable i should be " + i + ".");
+            } else {
+                fail("A non-existing variable " + var.name + " occurred in evaluation of program.");
+            }
+        }
+        assertEquals(0, variables.size(), "Some variables have not been evaluated");
     }
 
 }

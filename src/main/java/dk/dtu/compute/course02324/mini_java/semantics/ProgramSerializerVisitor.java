@@ -124,6 +124,22 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
         }
     }
 
+    @Override
+    public void visit(IfThenElse ifThenElse) {
+        result.append("if ( ");
+        ifThenElse.conditionalExpression.accept(this);
+        result.append(" >= 0 ) {" + System.lineSeparator());
+        indentLevel++;
+        ifThenElse.trueStatement.accept(this);
+        indentLevel--;
+        addIndentation();
+        result.append("} else {");
+        indentLevel++;
+        ifThenElse.falseStatement.accept(this);
+        indentLevel--;
+        result.append("}");
+    }
+
     private void operandToString(Operator operator, Expression expression, int number) {
         if (expression instanceof OperatorExpression) {
             OperatorExpression operatorExpression = (OperatorExpression) expression;

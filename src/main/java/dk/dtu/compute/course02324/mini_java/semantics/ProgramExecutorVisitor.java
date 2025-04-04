@@ -20,78 +20,105 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
     final public Map<Expression, Number> values = new HashMap<>();
 
     private Function<List<Number>, Number> plus1int =
-            args -> {int arg1 = args.get(0).intValue();
-                return arg1; };
+            args -> {
+                int arg1 = args.get(0).intValue();
+                return arg1;
+            };
 
     private Function<List<Number>, Number> plus1float =
-            args -> {float arg1 = args.get(0).floatValue();
-                return arg1; };
+            args -> {
+                float arg1 = args.get(0).floatValue();
+                return arg1;
+            };
 
     private Function<List<Number>, Number> minus1int =
-            args -> { int arg1 = args.get(0).intValue();
-                return -arg1; };
+            args -> {
+                int arg1 = args.get(0).intValue();
+                return -arg1;
+            };
 
     private Function<List<Number>, Number> minus1float =
             args -> {
                 float arg1 = args.get(0).floatValue();
-                return -arg1; };
+                return -arg1;
+            };
 
-    private Function<List<Number>,Number> plus2int =
-            args -> { int arg1 = args.get(0).intValue();
+    private Function<List<Number>, Number> plus2int =
+            args -> {
+                int arg1 = args.get(0).intValue();
                 int arg2 = args.get(1).intValue();
-                return arg1 + arg2; };
+                return arg1 + arg2;
+            };
 
-    private Function<List<Number>,Number> plus2float =
-            args -> { float arg1 = args.get(0).floatValue();
+    private Function<List<Number>, Number> plus2float =
+            args -> {
+                float arg1 = args.get(0).floatValue();
                 float arg2 = args.get(1).floatValue();
-                return arg1 + arg2; };
+                return arg1 + arg2;
+            };
 
-    private Function<List<Number>,Number> minus2int =
-            args ->{int arg1 = args.get(0).intValue();
+    private Function<List<Number>, Number> minus2int =
+            args -> {
+                int arg1 = args.get(0).intValue();
                 int arg2 = args.get(1).intValue();
-                return arg1 - arg2; };
+                return arg1 - arg2;
+            };
 
-    private Function<List<Number>,Number> minus2float =
-            args -> { float arg1 = args.get(0).floatValue();
+    private Function<List<Number>, Number> minus2float =
+            args -> {
+                float arg1 = args.get(0).floatValue();
                 float arg2 = args.get(1).floatValue();
-                return arg1 - arg2; };
+                return arg1 - arg2;
+            };
 
-    private Function<List<Number>,Number> multfloat =
-            args -> { float arg1 = args.get(0).floatValue();
+    private Function<List<Number>, Number> multfloat =
+            args -> {
+                float arg1 = args.get(0).floatValue();
                 float arg2 = args.get(1).floatValue();
-                return arg1 * arg2; };
+                return arg1 * arg2;
+            };
 
-    private Function<List<Number>,Number> multint =
-            args -> { int arg1 = args.get(0).intValue();
+    private Function<List<Number>, Number> multint =
+            args -> {
+                int arg1 = args.get(0).intValue();
                 int arg2 = args.get(1).intValue();
-                return arg1 * arg2; };
+                return arg1 * arg2;
+            };
 
-    private Function<List<Number>,Number> divint =
-            args -> { int arg1 = args.get(0).intValue();
+    private Function<List<Number>, Number> divint =
+            args -> {
+                int arg1 = args.get(0).intValue();
                 int arg2 = args.get(1).intValue();
-                return arg1 / arg2; };
+                return arg1 / arg2;
+            };
 
-    private Function<List<Number>,Number> divfloat =
-            args -> { float arg1 = args.get(0).floatValue();
+    private Function<List<Number>, Number> divfloat =
+            args -> {
+                float arg1 = args.get(0).floatValue();
                 float arg2 = args.get(1).floatValue();
-                return arg1 / arg2; };
+                return arg1 / arg2;
+            };
 
-    private Function<List<Number>,Number> modint =
-            args -> { int arg1 = args.get(0).intValue();
+    private Function<List<Number>, Number> modint =
+            args -> {
+                int arg1 = args.get(0).intValue();
                 int arg2 = args.get(1).intValue();
-                return arg1 % arg2; };
+                return arg1 % arg2;
+            };
 
-    private Function<List<Number>,Number> modfloat =
-            args -> { float arg1 = args.get(0).floatValue();
+    private Function<List<Number>, Number> modfloat =
+            args -> {
+                float arg1 = args.get(0).floatValue();
                 float arg2 = args.get(1).floatValue();
-                return arg1 % arg2; };
+                return arg1 % arg2;
+            };
 
     /**
      * The map below associates each operator for each possible type with a function
      * (lambda expression), that represents the semantics of that operation. These
      * define what happens when the operator needs to be executed.<p>
      */
-    final private Map<Operator, Map<Type, Function<List<Number>,Number>>> operatorFunctions = Map.ofEntries(
+    final private Map<Operator, Map<Type, Function<List<Number>, Number>>> operatorFunctions = Map.ofEntries(
             entry(PLUS2, Map.ofEntries(
                     entry(INT, plus2int),
                     entry(FLOAT, plus2float))
@@ -131,7 +158,7 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
 
     @Override
     public void visit(Sequence sequence) {
-        for (Statement substatement: sequence.statements) {
+        for (Statement substatement : sequence.statements) {
             visit(substatement);
         }
     }
@@ -148,7 +175,7 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
     @Override
     public void visit(PrintStatement printStatement) {
         printStatement.expression.accept(this);
-        System.out.println(printStatement.prefix + values.get(printStatement.expression ));
+        System.out.println(printStatement.prefix + values.get(printStatement.expression));
 
     }
 
@@ -172,7 +199,7 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
     public void visit(Literal literal) {
         if (literal instanceof IntLiteral) {
             values.put(literal, ((IntLiteral) literal).literal);
-        }  else if (literal instanceof FloatLiteral) {
+        } else if (literal instanceof FloatLiteral) {
             values.put(literal, ((FloatLiteral) literal).literal);
         }
     }
@@ -188,11 +215,11 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
     @Override
     public void visit(OperatorExpression operatorExpression) {
         Type type = pv.typeMapping.get(operatorExpression);
-        Map<Type,Function<List<Number>,Number>> typeMap = operatorFunctions.get(operatorExpression.operator);
+        Map<Type, Function<List<Number>, Number>> typeMap = operatorFunctions.get(operatorExpression.operator);
 
         // Function<List<Number>,Number> function = typeMap != null && type!= null ? typeMap.get(type) : null;
-        Function<List<Number>,Number> function = null;
-        if (typeMap != null && type!= null ) {
+        Function<List<Number>, Number> function = null;
+        if (typeMap != null && type != null) {
             function = typeMap.get(type);
         }
 
@@ -201,7 +228,7 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
         }
 
         List<Number> args = new ArrayList<>();
-        for (Expression subexpression: operatorExpression.operands ) {
+        for (Expression subexpression : operatorExpression.operands) {
             subexpression.accept(this);
             Number arg = values.get(subexpression);
             if (arg == null) {
@@ -213,5 +240,17 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
         Number result = function.apply(args);
         values.put(operatorExpression, result);
     }
+
+    @Override
+    public void visit(IfThenElse ifThenElse) {
+        ifThenElse.conditionalExpression.accept(this);
+
+        if (values.get(ifThenElse.conditionalExpression).intValue() >= 0) {
+            ifThenElse.trueStatement.accept(this);
+        } else {
+            ifThenElse.falseStatement.accept(this);
+        }
+    }
+
 
 }

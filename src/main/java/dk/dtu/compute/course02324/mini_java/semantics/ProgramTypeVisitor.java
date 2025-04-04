@@ -142,4 +142,14 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         }
     }
 
+    @Override
+    public void visit(IfThenElse ifThenElse) {
+        ifThenElse.conditionalExpression.accept(this);
+        if(!((typeMapping.get(ifThenElse.conditionalExpression).equals(INT)))){
+            problems.add("Expression is not of type int..." );
+        }
+        ifThenElse.falseStatement.accept(this);
+        ifThenElse.trueStatement.accept(this);
+    }
+
 }

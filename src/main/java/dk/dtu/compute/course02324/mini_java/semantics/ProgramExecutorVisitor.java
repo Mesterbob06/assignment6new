@@ -172,6 +172,11 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
         }
     }
 
+    /**
+     * Executes a printStatement by recursively visiting the expression
+     * and calling Sysout.
+     * @param printStatement printStatement to visit
+     */
     @Override
     public void visit(PrintStatement printStatement) {
         printStatement.expression.accept(this);
@@ -179,6 +184,13 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
 
     }
 
+    /**
+     * Executes a Mini-Java while loop using a real Java
+     * while loop with an expression requiring the input expression
+     * to be greater than or equal to 0 and recursively visiting the expression
+     * and the statement in the loop.
+     * @param whileLoop while loop to visit
+     */
     @Override
     public void visit(WhileLoop whileLoop) {
         while (values.get(whileLoop.expression).intValue() >= 0) {
@@ -241,6 +253,12 @@ public class ProgramExecutorVisitor extends ProgramVisitor {
         values.put(operatorExpression, result);
     }
 
+    /**
+     * Executes an if-then-else by visiting the conditional
+     * expression and then based on the result visiting one
+     * of the two statements.
+     * @param ifThenElse if-then-else block to visit
+     */
     @Override
     public void visit(IfThenElse ifThenElse) {
         ifThenElse.conditionalExpression.accept(this);

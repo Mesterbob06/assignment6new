@@ -46,6 +46,10 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
         }
     }
 
+    /**
+     * Serializes a printStatement by recursively serializing the expression.
+     * @param printStatement printStatement to visit
+     */
     @Override
     public void visit(PrintStatement printStatement) {
         result.append("System.out.println(\"").append(printStatement.prefix).append("\"");
@@ -54,6 +58,11 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
         result.append(")");
     }
 
+    /**
+     * Serializes a while loop, utilizing the indentLevel
+     * and addIndentation() utils to follow formatting conventions.
+     * @param whileLoop while loop to visit
+     */
     @Override
     public void visit(WhileLoop whileLoop) {
         result.append("while ( ");
@@ -114,6 +123,12 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
         }
     }
 
+    /**
+     * Serializes a if-then-else, utilizing the indentLevel and
+     * addIndentation() utils to follow formatting conventions and
+     * recursively serializing the conditional expression and statements.
+     * @param ifThenElse if-then-else block to visit
+     */
     @Override
     public void visit(IfThenElse ifThenElse) {
         result.append("if ( ");
@@ -123,7 +138,7 @@ public class ProgramSerializerVisitor extends ProgramVisitor  {
         ifThenElse.trueStatement.accept(this);
         indentLevel--;
         addIndentation();
-        result.append("} else {");
+        result.append("} else {").append(System.lineSeparator());
         indentLevel++;
         ifThenElse.falseStatement.accept(this);
         indentLevel--;

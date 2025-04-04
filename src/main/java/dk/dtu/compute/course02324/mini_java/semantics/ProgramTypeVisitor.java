@@ -34,6 +34,10 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         statement.accept(this);
     }
 
+    /**
+     * Visits all substatements of a sequence
+     * @param sequence sequence to visit
+     */
     @Override
     public void visit(Sequence sequence) {
         for (Statement substatement: sequence.statements) {
@@ -41,6 +45,11 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         }
     }
 
+    /**
+     * Checks for duplicate variable declaration and handles type-mapping
+     * for declarations while checking for type mismatch
+     * @param declaration declaration to visit
+     */
     @Override
     public void visit(Declaration declaration) {
         if (declaration.expression != null) {
@@ -63,6 +72,10 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         }
     }
 
+    /**
+     * Validates the printStatement expression
+     * @param printStatement printStatement to visit
+     */
     @Override
     public void visit(PrintStatement printStatement) {
         printStatement.expression.accept(this);
@@ -72,6 +85,10 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         // (which the above accept actually does).
     }
 
+    /**
+     * Validates the expression and recursively visits the statement
+     * @param whileLoop while loop to visit
+     */
     public void visit(WhileLoop whileLoop) {
         whileLoop.expression.accept(this);
         if(!((typeMapping.get(whileLoop.expression).equals(INT)))){
@@ -80,6 +97,12 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         whileLoop.statement.accept(this);
     }
 
+    /**
+     * Recursively checks types for expression and
+     * checks for type mismatch. Also checks for undefined variable
+     * assignment.
+     * @param assignment assignment to visit
+     */
     @Override
     public void visit(Assignment assignment) {
         assignment.expression.accept(this);
@@ -96,6 +119,10 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         }
     }
 
+    /**
+     * Visit a literal and perform type mapping.
+     * @param literal literal to visit
+     */
     @Override
     public void visit(Literal literal) {
         if (literal instanceof IntLiteral) {
@@ -105,6 +132,10 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         }
     }
 
+    /**
+     * Visit a variable and checks definition and type.
+     * @param var variable to visit
+     */
     @Override
     public void visit(Var var) {
         if (!variables.contains(var)) {
@@ -115,6 +146,10 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         }
     }
 
+    /**
+     * we didn't write this ┗|｀O′|┛
+     * @param operatorExpression operatorExpression to visit
+     */
     @Override
     public void visit(OperatorExpression operatorExpression) {
         Type operandType = null;
@@ -142,6 +177,12 @@ public class ProgramTypeVisitor extends ProgramVisitor {
         }
     }
 
+    /**
+     * Recursively visits the conditional expression and checks
+     * in the type map that it is an integer. Also visits the
+     * statements in the if and else blocks.
+     * @param ifThenElse if-then-else block to visit
+     */
     @Override
     public void visit(IfThenElse ifThenElse) {
         ifThenElse.conditionalExpression.accept(this);
